@@ -1,0 +1,33 @@
+const {readFile, writeFile} = require('fs')
+ 
+
+const getText = (path)=>{
+ return new Promise((resolve,reject)=>{
+   readFile( path,'utf8',(err, result)=>{
+     if(err){
+        reject(err)
+     }else{
+       resolve(result)
+     }
+    })
+ })
+}
+
+const write = (path)=>{
+ return new Promise((resolve,reject)=>{
+   writeFile('./content/promise.txt',path,(err,result)=>{
+     if(err){
+       reject(err)
+     }else{
+       resolve(result)
+     }
+   })
+ })
+}
+
+Promise.all([getText('./content/first.txt') ,getText('./content/second.txt')]).then((message)=>{
+ console.log(message)
+ return write(message[0]+message[1])
+}).then((message)=>{
+ console.log('done!')
+})
